@@ -15,23 +15,40 @@ public class ConcurrencyAndThreads {
 	        System.out.printf("%s : Starting MessageLoop thread\n", Thread.currentThread().getName());
 
 	        messageLoop.start();
-	        Thread.sleep(maxWaitTime*1000);
-
 
 	        System.out.printf("%s : Waiting for MessageLoop thread to finish\n", Thread.currentThread().getName());
 
+
+//	        Thread.currentThread().join(maxWaitTime * 1000);
+//	        Thread.sleep(maxWaitTime * 1000);
+
+
+/*
         	if (!messageLoop.isInterrupted()) {
 	        	Thread.sleep(500);
 	            System.out.printf("%s : Continuing to wait...\n", Thread.currentThread().getName());
 	        } else {
 	        	messageLoop.interrupt();
 	        }
-/*        	while (!messageLoop.isInterrupted()) {
-	        	Thread.sleep(500);
-	            System.out.printf("%s : Continuing to wait...\n", Thread.currentThread().getName());
+*/
+ //       	while (!messageLoop.isInterrupted()) {
+	        
+	        for (int i = 1; i <= maxWaitTime * 2; i++) {
+	        	try {
+	        		Thread.sleep(500);
+		            System.out.printf("%s : Continuing to wait...\n", Thread.currentThread().getName());
+	        	} catch (InterruptedException e) {
+	            	messageLoop.interrupt();
+	        	}
 	        }
-*/		    
-        	
+	        
+	        	
+//	        }
+
+
+
+		    
+
         	if (maxWaitTime == 5) {
                 System.out.printf("%s : Done!\n", Thread.currentThread().getName());
         	}
@@ -65,8 +82,8 @@ class MessageLoop implements Runnable {
        		System.out.printf("%s : %s\n", Thread.currentThread().getName(), messages[i]);
 		} catch (InterruptedException e) {
     			System.out.printf("%s : MessageLoop interrupted!\n", Thread.currentThread().getName());
-//				Thread.currentThread().interrupt();
-    			break;
+				Thread.currentThread().interrupt();
+    			return;
    			}
 		}
 	}
